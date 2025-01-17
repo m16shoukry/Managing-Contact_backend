@@ -9,3 +9,9 @@ export class LoginDto {
   @IsString({ message: "Password must be a string" })
   password!: string;
 }
+
+export class LoginResponseDto {
+  token!: string;
+
+  expireInSeconds!: number;
+}

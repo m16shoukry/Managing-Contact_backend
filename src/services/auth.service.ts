@@ -1,6 +1,7 @@
 import { UserService } from "./user.service";
 import { HashUtil } from "../utils/hash.util";
 import jwt from "jsonwebtoken";
+import { LoginResponseDto } from "../dtos/login.dto";
 
 export class AuthService {
   private userService: UserService;
@@ -9,7 +10,10 @@ export class AuthService {
     this.userService = userService;
   }
 
-  async login(userName: string, password: string): Promise<string | null> {
+  async login(
+    userName: string,
+    password: string
+  ): Promise<LoginResponseDto | null> {
     const user = await this.userService.getUserByUsername(userName);
 
     if (user && (await HashUtil.comparePassword(password, user.password))) {
@@ -18,7 +22,7 @@ export class AuthService {
         String(process.env.JWT_SECRET),
         { expiresIn: "1h" }
       );
-      return token;
+      return { token, expireInSeconds: 3600 };
     }
 
     return null;

@@ -24,9 +24,7 @@ export class AuthController {
       const token = await this.authService.login(userName, password);
 
       if (token) {
-        res
-          .status(200)
-          .json(new SuccessApiResponse({ token }, "Login successful"));
+        res.status(200).json(new SuccessApiResponse(token, "Login successful"));
       } else {
         res
           .status(401)

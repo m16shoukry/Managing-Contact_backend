@@ -38,7 +38,7 @@ export class ContactController {
         req["userId"],
         filters
       );
-      res.status(200).json(new SuccessApiResponse(contacts));
+      res.status(200).json(contacts);
     } catch (error: any) {
       res.status(500).json(new ErrorApiResponse(error.message));
     }
