@@ -10,6 +10,7 @@ import {
   UpdateContactDto,
 } from "../dtos/contact.dto";
 import { SSEService } from "../services/SSE.service";
+import { sseValidationMiddleware } from "../middlewares/sse-validate.middleware";
 
 const contactRoutes = Router();
 
@@ -38,7 +39,11 @@ contactRoutes.get(
   contactController.listContacts
 );
 
-contactRoutes.get("/contact-locks", contactController.contactLocks);
+contactRoutes.get(
+  "/contact-locks",
+  sseValidationMiddleware,
+  contactController.contactLocks
+);
 
 contactRoutes.put(
   "/:contactId",

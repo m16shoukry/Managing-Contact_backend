@@ -86,7 +86,7 @@ export class ContactService {
     }
 
     contact.lockedBy = userId;
-    contact.lockedUntil = new Date(Date.now() + 60 * 1000);
+    contact.lockedUntil = new Date(Date.now() + 30 * 1000); // 30 seconds lock
     await contact.save();
 
     this.sseService.broadcast("contact-locks", {
