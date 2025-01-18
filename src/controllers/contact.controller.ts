@@ -77,9 +77,9 @@ export class ContactController {
   };
 
   deleteContact = async (req: Request, res: Response): Promise<void> => {
-    const { id } = req.params;
+    const { contactId } = req.params;
     try {
-      await this.contactService.deleteContact(id, req["userId"]);
+      await this.contactService.deleteContact(contactId, req["userId"]);
       res
         .status(200)
         .json(new SuccessApiResponse(null, "Contact deleted successfully"));

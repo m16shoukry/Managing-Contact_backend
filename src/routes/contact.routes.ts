@@ -47,6 +47,10 @@ contactRoutes.put(
   contactController.updateContact
 );
 
-contactRoutes.delete("/:id", authMiddleware, contactController.deleteContact);
+contactRoutes.delete(
+  "/:contactId",
+  authMiddleware,
+  contactController.deleteContact
+);
 
 export default contactRoutes;
