@@ -24,7 +24,7 @@ export class ContactRepository extends BaseRepository<IContact> {
     const query: any = { deleted: false };
 
     if (filter.name) query.name = { $regex: filter.name, $options: "i" };
-    if (filter.phone) query.phone = filter.phone;
+    if (filter.phone) query.phone = { $regex: filter.phone, $options: "i" };
     if (filter.address)
       query.address = { $regex: filter.address, $options: "i" };
 
@@ -35,7 +35,7 @@ export class ContactRepository extends BaseRepository<IContact> {
     const query: any = { deleted: false };
 
     if (filter.name) query.name = { $regex: filter.name, $options: "i" };
-    if (filter.phone) query.phone = filter.phone;
+    if (filter.phone) query.phone = { $regex: filter.phone, $options: "i" };
     if (filter.address)
       query.address = { $regex: filter.address, $options: "i" };
 

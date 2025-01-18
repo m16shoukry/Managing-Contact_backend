@@ -28,6 +28,7 @@ export class SSEService {
   }
 
   broadcast(channel: string, message: any) {
+    console.log("Broadcasting message:", message);
     this.eventEmitter.emit(channel, message);
   }
 }

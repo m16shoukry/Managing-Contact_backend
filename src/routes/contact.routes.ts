@@ -16,7 +16,7 @@ const contactRoutes = Router();
 const contactRepository = new ContactRepository();
 const sseService = new SSEService();
 const contactService = new ContactService(contactRepository, sseService);
-const contactController = new ContactController(contactService);
+const contactController = new ContactController(contactService, sseService);
 
 contactRoutes.post(
   "/",
@@ -25,12 +25,20 @@ contactRoutes.post(
   contactController.addContact
 );
 
+contactRoutes.post(
+  "/:contactId/lock",
+  authMiddleware,
+  contactController.lockContact
+);
+
 contactRoutes.get(
   "/",
   authMiddleware,
   validateDto(ListContactsFilterDto),
   contactController.listContacts
 );
+
+contactRoutes.get("/contact-locks", contactController.contactLocks);
 
 contactRoutes.put(
   "/:contactId",

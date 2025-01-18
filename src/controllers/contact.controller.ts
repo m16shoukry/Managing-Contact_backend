@@ -3,12 +3,15 @@ import { ContactService } from "../services/contact.service";
 import { SuccessApiResponse } from "../core/api-response/success-api-response.dto";
 import { ErrorApiResponse } from "../core/api-response/Error-api-response.dto";
 import { ListContactsFilterDto } from "../dtos/contact.dto";
+import { SSEService } from "../services/SSE.service";
 
 export class ContactController {
   private contactService: ContactService;
+  private sseService: SSEService;
 
-  constructor(contactService: ContactService) {
+  constructor(contactService: ContactService, sseService: SSEService) {
     this.contactService = contactService;
+    this.sseService = sseService;
   }
 
   addContact = async (req: Request, res: Response): Promise<void> => {
@@ -60,14 +63,16 @@ export class ContactController {
     }
   };
 
-  unlockContact = async (req: Request, res: Response): Promise<void> => {
-    const { id } = req.params;
-
+  lockContact = async (req: Request, res: Response): Promise<void> => {
+    const { contactId } = req.params;
     try {
-      await this.contactService.unlockContact(id, req["userId"]);
-      res.status(200).json({ message: "Contact unlocked" });
+      const lockedContact = await this.contactService.lockContact(
+        contactId,
+        req["userId"]
+      );
+      res.status(200).json(new SuccessApiResponse(lockedContact));
     } catch (error: any) {
-      res.status(400).json({ error: error.message });
+      res.status(400).json(new ErrorApiResponse(error.message));
     }
   };
 
@@ -81,5 +86,9 @@ export class ContactController {
     } catch (error: any) {
       res.status(500).json(new ErrorApiResponse(error.message));
     }
+  };
+
+  contactLocks = (req: Request, res: Response) => {
+    this.sseService.addClient("contact-locks", res);
   };
 }
