@@ -161,8 +161,13 @@ paths:
       summary: List all contact locks
       tags:
         - Contacts
-      security:
-        - bearerAuth: []  
+      parameters:
+        - in: query
+          name: token
+          required: true
+          schema:
+            type: string
+          description: JWT token to allow stablish the connection 
       responses:
         "200":
           description: A list of contact locks
